@@ -1,0 +1,14 @@
+{
+    "title": "Rust",
+    "year": 2023,
+    "live": true,
+    "organizers": [
+        "vbi",
+        "techfest"
+    ],
+    "presenter": {
+        "name": "Dung",
+        "age": 27,
+        "occupation": "Engineer"
+    }
+}
