@@ -1,6 +1,4 @@
-## Giới thiệu bản thân
-
-- Hồ Đình Dụng - Blockchain Engineer - Lecturer in VBI Academy
+# JSON PARSER
 
 ## Yêu cầu trước khi vào Challenge
 
@@ -136,3 +134,7 @@ Vì cấu trúc JSON có chuẩn , dựa vào chuẩn ta có các quan sát như
   }
 }
 ```
+
+
+## Link code 
+https://github.com/CocDap/Rust-Challenges/tree/main/json-parser
