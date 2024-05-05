@@ -182,6 +182,138 @@ Các bạn có thể tham khảo ở đây:
 https://github.com/CocDap/Rust-Bootcamp-2024/tree/main/08-Rust-Error-Handling
 
 
+### Cách sử dụng crate log
+
+Log hiểu đơn giản là in ra thông tin kết quả của 1 dòng lệnh nào đó. Log dùng để debug, monitor của 1 ứng dụng nhằm cho việc phát hiện lỗi trở nên dễ dàng hơn. Nó cơ bản là println!, nhưng sẽ gồm nhiều chức năng hơn:
++ Level-based : WARN, INFO, DEBUG, ERROR. Những level này nhằm thông báo rằng dòng lệnh in ra với mục đích gì 
++ Custom log: đẹp hơn, dễ quan sát hơn 
+
+Ví dụ: 
+
+1. Install `log` và `env_logger`
+
+```bash
+cargo add log env_logger
+```
+
+2. Đặt dòng lệnh `log` bạn muốn log giá trị ra 
+Ví dụ:
+
+```rust
+impl Iterator for Fibonacci {
+	type Item = u32;
+
+	fn next(&mut self) -> Option<u32> {
+		let new_value = match (self.prev, self.prev_prev) {
+			(Some(pre), Some(pre_pre)) => {
+				let new_value = pre + pre_pre;
+				self.prev_prev = self.prev;
+				self.prev = Some(new_value);
+				new_value
+			}
+			(Some(_pre), None) => {
+				self.prev_prev = self.prev;
+				self.prev = Some(1);
+				1
+			}
+			(None, None) => {
+				self.prev = Some(0);
+				0
+			}
+			(_, _) => return None,
+		};
+		log::debug!(target:"Fibonacci", "New Value:{}", new_value);
+		Some(new_value)
+	}
+}
+``` 
+
+Đối với ví dụ này, dùng debug để in ra giá trị `new_value` sau khi thực hiện `next`. Thêm phần `target` để hiểu diễn giải thông tin này của của hàm `fibonacci`
+
+
+3. Custom log - Thêm thời gian cho log
+
++ Lưu ý cài đặt `chrono` crate để lấy thời gian 
++ Import thư viện 
+```rust
+// custom log
+use env_logger::{Builder, Env};
+// write thông tin thêm vào log 
+use std::io::Write;
+```
+
++ Code chính 
+```rust
+fn main() {
+	let mut builder = Builder::from_env(Env::default());
+	builder.format(|buf, record| {
+		writeln!(buf, "{} [{}] -{}", chrono::Local::now().format("%d-%m-%Y %H:%M:%S"), record.level(),record.args())
+	});
+	builder.init();
+    let mut fibo = Fibonacci{ prev: Some(1), prev_prev: Some(0)};
+    fibo.next();
+    fibo.next();
+    fibo.next();
+    fibo.next();
+
+}
+
+```
++ Chạy chương trình 
+
+```bash
+RUST_LOG=debug cargo run
+```
+
++ Kết qủa 
+```
+   Compiling test-rust-developer v0.1.0 (/Users/xxx/test/test-rust-developer)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.48s
+     Running `target/debug/test-rust-developer`
+[2024-05-04T04:01:28Z DEBUG Fibonacci] New Value:1
+[2024-05-04T04:01:28Z DEBUG Fibonacci] New Value:2
+[2024-05-04T04:01:28Z DEBUG Fibonacci] New Value:3
+[2024-05-04T04:01:28Z DEBUG Fibonacci] New Value:5
+```
+
+4. Xuất thông tin ra file .log 
++ Import thư viện 
+
+```rust
+use std::fs::File;
+```
+
++ Tạo file log, nhúng file log vào `builder`
+
+```rust
+fn main() {
+    let log_file = File::create("fibonacci.log").unwrap();
+
+    let mut builder = Builder::from_env(Env::default());
+    builder.format(|buf, record| {
+        writeln!(
+            buf,
+            "{} [{}] -{}",
+            chrono::Local::now().format("%d-%m-%Y %H:%M:%S"),
+            record.level(),
+            record.args()
+        )
+    });
+    // nhúng file log 
+    builder
+        .target(env_logger::Target::Pipe(Box::new(log_file)))
+        .init();
+	
+    let mut fibo = Fibonacci {
+        prev: Some(1),
+        prev_prev: Some(0),
+    };
+    fibo.next();
+    fibo.next();
+    fibo.next();
+    fibo.next();
+}
+```
 
 
 
