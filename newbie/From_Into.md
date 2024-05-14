@@ -23,7 +23,7 @@ pub trait From<T>: Sized {
 
 + Source: https://doc.rust-lang.org/std/convert/trait.From.html
 
-+ From<T> for U : Muốn chuyển đổi kiểu dữ liệu T sang U dùng method `from`
++ `From<T> for U` : Muốn chuyển đổi kiểu dữ liệu T sang U dùng method `from`
 
 + Dựa vào trait `From`, mô tả hành vi cụ thể cho 1 đối tượng cụ thể 
 
@@ -82,7 +82,8 @@ pub trait Into<T>: Sized {
 
 + `Into<U>`: Nếu đã implement `From<T> for U` thì Rust sẽ tự động implement trait `Into<U> for T`
 
-+ Ví dụ : Dựa vào ví dụ trên, ta đã implement `trait From<T> for U`, nghĩa là implement `trait From<Celsius> for Fahrenheit` và `trait From<Fahrenheit> for Celsius` -> có thể sử dụng `.into()` để chuyển đổi 
++ Ví dụ : Dựa vào ví dụ trên, ta đã implement `trait From<T> for U`, nghĩa là implement `impl From<Celsius> for Fahrenheit` và `impl From<Fahrenheit> for Celsius` -> có thể sử dụng `.into()` để chuyển đổi 
+
 
 
 ```rust
@@ -101,7 +102,7 @@ fn main() {
 ```
 
 ### Kết luận
-+ Mối quan hệ: `From<T> for U` và `Into<U> for T` là 2 trait có sẵn được sử dụng thông dụng trong Rust, thường sẽ implement `trait From<T> for U` thì có thể sử dụng `Into<U> for T`
++ Mối quan hệ: `From<T> for U` và `Into<U> for T` là 2 trait có sẵn được sử dụng thông dụng trong Rust, thường sẽ implement `impl From<T> for U` thì có thể sử dụng `Into<U> for T`
 
 + Chuyển đổi ko có lỗi : Nghĩa là chuyển đổi kiểu dữ liệu A sang B và ngược lại luôn thành công. Nếu handle được lỗi khi convert , ta có thể sử dụng cặp trait tương tự 
 là `TryFrom` và `TryInto`
