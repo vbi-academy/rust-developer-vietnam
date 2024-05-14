@@ -80,7 +80,42 @@ pub trait Into<T>: Sized {
 
 + Source: https://doc.rust-lang.org/std/convert/trait.Into.html
 
-+ `Into<U>`: Nếu đã implement `From<T> for U` thì Rust sẽ tự động implement trait `Into<U> for T`
++ `Into<U>`: Nếu đã implement `From<T> for U` thì Rust sẽ tự động implement trait `Into<U> for T` <br>
+    Và để minh chứng cho việc Rust tự động implement trait `Into` cho `T` với `T` đã implement `From`, chúng ta có thể vào đường link này để xem trong source code của Rust <bt>
+    [https://doc.rust-lang.org/src/core/convert/mod.rs.html#746-761](https://doc.rust-lang.org/src/core/convert/mod.rs.html#746-761) <br>
+    Đoạn code bên dưới đã được lược bỏ phần comment để tập trung vào phần code logic
+    ```rust
+    #[stable(feature = "rust1", since = "1.0.0")]
+    impl<T, U> Into<U> for T
+    where
+        U: From<T>,
+    {
+        #[inline]
+        #[track_caller]
+        fn into(self) -> U {
+            U::from(self)
+        }
+    }
+    ```
+    Phân tích code:
+    ```rust
+    impl <T, U> Into<U> for T
+    where
+        U: From<T>
+    ...
+    ```
+    Đoạn code này là khai báo việc mình muốn implement `Into<U>` cho `T`, với điều kiện U phải có `From<T>` <br>
+    Tại vì `T` là generic, suy ra `Into<U>` được đặt lên TẤT CẢ các dạng tồn tại trong rust, miễn `U: From<T>`
+    ```rust
+    {
+        #[inline]
+        #[track_caller]
+        fn into(self) -> U {
+            U::from(self)
+        }
+    }
+    ```
+    Đoạn code này chỉ đơn thuần là gọi hàm `from` từ `U`, tại vì điều kiện `U: From<T>` dẫn đến `U` có hàm `from` để chạy và `U::from()` trả về `T`
 
 + Ví dụ : Dựa vào ví dụ trên, ta đã implement `trait From<T> for U`, nghĩa là implement `impl From<Celsius> for Fahrenheit` và `impl From<Fahrenheit> for Celsius` -> có thể sử dụng `.into()` để chuyển đổi 
 
