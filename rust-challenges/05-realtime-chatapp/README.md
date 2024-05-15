@@ -527,6 +527,8 @@ Mình chưa có quá nhiều kinh nghiệm với Rust trong việc xây dựng B
 Cảm ơn mọi người đã đọc.
 
 ## Github
+Mọi người có thể tham khảo repo code hoàn chỉnh ở đây nhé.
+<br>
 [https://github.com/Learning-Tech-Workspace/learn-rust-backend](https://github.com/Learning-Tech-Workspace/learn-rust-backend)
 
 ## Postman
