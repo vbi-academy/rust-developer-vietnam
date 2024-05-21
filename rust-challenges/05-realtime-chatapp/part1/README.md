@@ -116,7 +116,7 @@ Ta dùng Postman để kiểm tra xem server hoạt động chưa nhé
 
 ## Tìm hiểu các thành phần bên trong
 
-Tiếp đến ta đi vào chi tiết source code để hiểu rõ hơn về các thành phần bên trong 
+Tiếp đến ta đi vào chi tiết source code để hiểu rõ hơn về các thành phần bên trong
 
 ```rust
 #[tokio::main]
@@ -138,13 +138,13 @@ async fn main() {
 ```
 
 - async / await: Khi ta chạy chương trình, lúc này chỉ có main thread được chạy và những task nào cần tốn nhiều thời gian để xử lý (await) sẽ được xử lý ở background trong khi đó main thread sẽ tiến hành xử lý những task khác, sau khi task kia xử lý xong ở background thì main thread sẽ quay lại task đó và tiến hành xử lý tiếp.
-    - Ví dụ: khi client request đến server một resource nào đó mà server cần đọc từ file mà quá trình đọc từ file có thể sẽ rất lâu nếu mà ta chạy đồng bộ thì phải đợi main thread xử lý xong việc đọc file rồi mới xử lý được các task khác. Lúc này khi 1 client khác request đến thì sẽ phải đợi main thread xử lý xong việc đọc file rồi mới đến lượt mình
-    - Một vài điều cần lưu ý khi làm việc với async / await
-        - await chỉ được gọi trong async function
+  - Ví dụ: khi client request đến server một resource nào đó mà server cần đọc từ file mà quá trình đọc từ file có thể sẽ rất lâu nếu mà ta chạy đồng bộ thì phải đợi main thread xử lý xong việc đọc file rồi mới xử lý được các task khác. Lúc này khi 1 client khác request đến thì sẽ phải đợi main thread xử lý xong việc đọc file rồi mới đến lượt mình
+  - Một vài điều cần lưu ý khi làm việc với async / await
+    - await chỉ được gọi trong async function
 - #[tokio::main]: attribute → chạy hàm main trong context bất đồng bộ
 - tracing: setup log system để tiện debug, monitor,…
 - Router: định nghĩa các path để truy cập các resource
-    - HTTP method: GET, POST, PUT, DELETE
+  - HTTP method: GET, POST, PUT, DELETE
 - listener: set ip address và port cho web server
 - serve: chạy server trên listener đã tạo ở trên
 
@@ -172,7 +172,7 @@ async fn create_user(
 ```
 
 - Đây là 2 handler function ứng với mỗi route được định nghĩa
-    - Tất cả các **handler** function đều là **async** function
+  - Tất cả các **handler** function đều là **async** function
 
 ```rust
 Json(payload): Json<CreateUser>
@@ -211,8 +211,8 @@ struct User {
 ```
 
 - Phần định nghĩa struct thì có lẽ mọi người đã quá quen thuộc trong đây có 1 phần đặc biệt mình muốn nói đó là **attribute** trong Rust
-    - **Serialize**: convert từ Rust type sang JSON
-    - **Deserialize**: convert từ JSON sang Rust Type
+  - **Serialize**: convert từ Rust type sang JSON
+  - **Deserialize**: convert từ JSON sang Rust Type
 
 ## Setup codebase
 
@@ -227,39 +227,37 @@ Trong bài viết này, mình chỉ tập trung vào 2 feature
 
 - module `enums` quản lý các enum type như routes,…
 - module `features` gồm các sub module tương ứng với chức năng của từng đối tượng
-    - `handler.rs`  định nghĩa các hàm xử lý các request
-    - `model.rs` định nghĩa các struct để request, response,…
-    - `routes.rs` định nghĩa các route cho feature
+  - `handler.rs` định nghĩa các hàm xử lý các request
+  - `model.rs` định nghĩa các struct để request, response,…
+  - `routes.rs` định nghĩa các route cho feature
 - `main.rs` khởi chạy server
 - `router.rs` định nghĩa router cho server bằng cách kết hợp các router con đã định nghĩa ở mỗi feature
 
 ### Quản lý các route path cho mỗi feature bằng Enum
 
 - Áp dụng kiến thức **Convert Enum sang 1 kiểu dữ liệu khác**
-    
-    `enums/routes.rs` 
-    
-    ```rust
-    const AUTH_PATH: &str = "/auth";
-    const USERS_PATH: &str = "/users";
-    
-    pub enum RoutePath {
-        AUTH,
-        USERS,
-    }
-    
-    impl RoutePath {
-        pub fn get_path(&self) -> &'static str {
-            match self {
-                RoutePath::AUTH => AUTH_PATH,
-                RoutePath::USERS => USERS_PATH,
-            }
-        }
-    }
-    ```
-    
+  `enums/routes.rs`
 
-`router.rs` 
+  ```rust
+  const AUTH_PATH: &str = "/auth";
+  const USERS_PATH: &str = "/users";
+
+  pub enum RoutePath {
+      AUTH,
+      USERS,
+  }
+
+  impl RoutePath {
+      pub fn get_path(&self) -> &'static str {
+          match self {
+              RoutePath::AUTH => AUTH_PATH,
+              RoutePath::USERS => USERS_PATH,
+          }
+      }
+  }
+  ```
+
+`router.rs`
 
 Mình show trước cho mọi người code trong file này để mọi người biết được server có những router chính nào và từ đây ta cũng dễ dàng đi đến từng router của mỗi feature. Mình sẽ đi từ tổng quan đến chi tiết thì mọi người sẽ để nắm được flow hoạt động hơn
 
@@ -276,19 +274,19 @@ use crate::{
 
 pub fn create_router() -> Router {
     let auth_routes = get_auth_routes();
-    let user_routes = get_user_routes(); 
+    let user_routes = get_user_routes();
 
     let api_routes = Router::new()
     .nest(RoutePath::AUTH.get_path(), auth_routes)
     .nest(RoutePath::USERS.get_path(), user_routes);
 
-    Router::new().nest("/api", api_routes)  
+    Router::new().nest("/api", api_routes)
 }
 ```
 
 ## Basic authentication với JWT (feature auth)
 
-`features/auth/router.rs` 
+`features/auth/router.rs`
 
 Đây là các route của feature auth
 
@@ -304,7 +302,7 @@ pub fn get_routes() -> Router {
 }
 ```
 
-`features/auth/handler.rs` 
+`features/auth/handler.rs`
 
 Bây giờ mình sẽ đi vào chi tiết từng handler function
 
@@ -363,44 +361,29 @@ pub async fn verify(header_map: HeaderMap) -> Result<Json<String>, StatusCode> {
 ```
 
 - login
-    
-    ```rust
-    let LoginRequest { email, password } = payload;
-    ```
-    
-    Đây là kĩ thuật destructuring struct để lấy ra các field cần thiết
-    
-    JWT gồm 3 thành phần chính
-    
-    - Header: chứa thông tin về thuật toán dùng để mã hóa
-    - Payload (Claims): chứa các metadata như thời gian hết hạn token, subject,…
-    - Signature: được tạo ra bằng cách mã hóa header và payload từ secret key
-    
+  ```rust
+  let LoginRequest { email, password } = payload;
+  ```
+  Đây là kĩ thuật destructuring struct để lấy ra các field cần thiết
+  JWT gồm 3 thành phần chính
+  - Header: chứa thông tin về thuật toán dùng để mã hóa
+  - Payload (Claims): chứa các metadata như thời gian hết hạn token, subject,…
+  - Signature: được tạo ra bằng cách mã hóa header và payload từ secret key
     [chrono - crates.io: Rust Package Registry](https://crates.io/crates/chrono): crate hỗ trợ xử lý về thời gian
-    
     [jsonwebtoken - crates.io: Rust Package Registry](https://crates.io/crates/jsonwebtoken): crate hỗ trợ tạo JWT
-    
     Mình thêm các dependencies sau vào Cargo.toml
-    
-    ```rust
-    jsonwebtoken = "9.3.0"
-    chrono = "0.4.38"
-    ```
-    
+  ```rust
+  jsonwebtoken = "9.3.0"
+  chrono = "0.4.38"
+  ```
 - verify: hàm này chỉ để kiểm tra việc mình decode JWT ra
-    
-    HeaderMap là extractor của axum để lấy các thông tin Header của Request như authorization,…
-    
-    decode nhận vào 3 tham số
-    
-    token: truyền lên thông qua Header của Request
-    
-    secret key: để decode JWT
-    
-    Validation: kiểm tra xem token còn hạn không,…
-    
+  HeaderMap là extractor của axum để lấy các thông tin Header của Request như authorization,…
+  decode nhận vào 3 tham số
+  token: truyền lên thông qua Header của Request
+  secret key: để decode JWT
+  Validation: kiểm tra xem token còn hạn không,…
 
-`features/auth/model.rs` 
+`features/auth/model.rs`
 
 Đây là các struct hỗ trợ cho các handler function trên
 
@@ -438,7 +421,7 @@ Mình thêm dependency sau vào Cargo.toml
 uuid = { version = "1.8.0", features = ["v4", "serde"] }
 ```
 
-`features/users/routes.rs` 
+`features/users/routes.rs`
 
 Đây là route của feature user
 
@@ -453,7 +436,7 @@ pub fn get_routes() -> Router {
 }
 ```
 
-`features/users/handler.rs` 
+`features/users/handler.rs`
 
 Đây là handler function cho route
 
@@ -485,7 +468,7 @@ pub async fn create_user(
 
 Đoạn code chỉ thay đổi chỗ id của user sẽ được tạo ngẫu nhiên
 
-`features/users/model.rs` 
+`features/users/model.rs`
 
 Đây là model sử dụng cho handler function trên
 
@@ -527,8 +510,9 @@ Mình chưa có quá nhiều kinh nghiệm với Rust trong việc xây dựng B
 Cảm ơn mọi người đã đọc.
 
 ## Github
-Mọi người có thể tham khảo repo code hoàn chỉnh ở đây nhé.
-<br>
+
+Mọi người có thể xem source code hoàn chỉnh ở đây nhé.
+
 [https://github.com/Learning-Tech-Workspace/learn-rust-backend](https://github.com/Learning-Tech-Workspace/learn-rust-backend)
 
 ## Postman
@@ -537,12 +521,10 @@ Mọi người có thể tham khảo repo code hoàn chỉnh ở đây nhé.
 
 # Reference
 
-[Rust Axum Full Course - Web Development (GitHub repo updated to Axum 0.7) (youtube.com)](https://www.youtube.com/watch?v=XZtlD_m59sM)
+[Rust Axum Full Course - Web Development (GitHub repo updated to Axum 0.7)](https://www.youtube.com/watch?v=XZtlD_m59sM)
 
-[Using Rust, Axum, PostgreSQL, and Tokio to build a Blog (spacedimp.com)](https://spacedimp.com/blog/using-rust-axum-postgresql-and-tokio-to-build-a-blog/)
+https://github.com/tokio-rs/axum/blob/main/ECOSYSTEM.md#tutorials
 
-[axum/ECOSYSTEM.md at main · tokio-rs/axum (github.com)](https://github.com/tokio-rs/axum/blob/main/ECOSYSTEM.md#tutorials)
+https://github.com/joelparkerhenderson/demo-rust-axum
 
-[https://github.com/joelparkerhenderson/demo-rust-axum](https://github.com/joelparkerhenderson/demo-rust-axum)
-
-[JWT Authentication in Rust | A Step-by-Step Guide (youtube.com)](https://www.youtube.com/watch?v=p2ljQrRl0Mg)
+[JWT Authentication in Rust | A Step-by-Step Guide](https://www.youtube.com/watch?v=p2ljQrRl0Mg)
