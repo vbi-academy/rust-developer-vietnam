@@ -31,6 +31,26 @@ Trong bài viết này mình sẽ không nói quá chi tiết về Docker. Nếu
 - [https://www.youtube.com/watch?v=pg19Z8LL06w](https://www.youtube.com/watch?v=pg19Z8LL06w)
 - [https://www.youtube.com/watch?v=SXwC9fSwct8](https://www.youtube.com/watch?v=SXwC9fSwct8)
 
+Mọi người có thể sẽ cần update version cho docker-compose.
+
+```bash
+
+sudo apt-get update
+
+sudo apt-get install docker-compose-plugin
+
+```
+
+Mọi người chạy lệnh sau để kiểm tra version của docker compose nhé
+
+```bash
+
+docker compose version
+
+```
+
+![Untitled](img/Untitled15.png)
+
 Mọi người tạo file `docker-compose.yaml` ở thư mục gốc nhé
 
 ```rust
@@ -120,6 +140,8 @@ Kết quả sau khi nhấn `Save`
 [https://dbdiagram.io/](https://dbdiagram.io/): Đây là trang web hỗ trợ vẽ diagram khá tốt mà mình muốn recommend cho mọi người
 
 ![Untitled](img/Untitled%207.png)
+
+**Update**: Sau khi đọc lại bài viết thì mình thấy lược đồ cơ sở dữ liệu có vài chỗ chưa được hợp lý lắm. Đó là bảng Conversation vì 1 Group thì có N Message nhưng 1 Message thì chỉ thuộc về 1 Group mà thôi cho nên không cần bảng Conversation.
 
 ## Cài đặt các crate cần thiết
 
@@ -214,6 +236,40 @@ DATABASE_URL=postgres://admin:admin@localhost:5432/chat-app
 
 Mọi người làm theo hướng dẫn phía trên phần `Creating Migration Directory` thôi nha.
 
+Để có thể chạy được migration thông qua `sea-orm-cli`, mọi người truy cập file `Cargo.toml` của folder `migration` và uncomment các dòng sau
+
+```toml
+
+features = [
+
+  # Enable at least one `ASYNC_RUNTIME` and `DATABASE_DRIVER` feature if you want to run migration via CLI.
+
+  # View the list of supported features at https://www.sea-ql.org/SeaORM/docs/install-and-config/database-and-async-runtime.
+
+  # e.g.
+
+  "runtime-tokio-rustls",  # `ASYNC_RUNTIME` feature
+
+  "sqlx-postgres",         # `DATABASE_DRIVER` feature
+
+]
+
+```
+
+Sau đó mọi người truy cập vào file `Cargo.toml` trong thư mục gốc và thêm dòng sau
+
+```toml
+
+[workspace]
+
+members = [".", "migration"]
+
+```
+
+Workspace sử dụng để quản lý nhiều crate trong dự án trong trường hợp này gồm root crate (src) và crate migration
+
+Nếu không khai báo workspace thì Rust Analyzer sẽ không nhận diện được tất cả crate có trong project ⇒ Không báo lỗi,…
+
 Sau khi làm xong mọi người truy cập vào file `migration/src/m20220101_000001_create_table.rs`
 
 ```rust
@@ -275,6 +331,8 @@ Mình sẽ giải thích qua một vài thành phần quan trọng
     - Thiết lập khóa chính (primary key), khóa ngoại (foreign key)
     - Thiết lập các ràng buộc (constraint)
 - `async fn down()`: xóa đi table trong database
+
+Mọi người nhớ xóa hoặc comment dòng lệnh `todo!()` để có thể chạy migration nhé.
 
 `migration/src/lib.rs`
 
@@ -766,16 +824,6 @@ enum UserGroup {
 }
 ```
 
-### Atomic migration (chỉ hoạt động với PostgreSQL)
-
-Khi chạy migration failed thì database sẽ được rolled back về trạng thái cũ (do migration script thực thi trong transaction)
-
-### Schema First or Entity First
-
-Có 2 cách tiếp cận khi sử dụng sea-orm là `Schema First` và `Entity First`
-
-Trong hướng dẫn này thì mình tiếp cận theo hướng `Schema First` (chạy migration để tạo ra các table trong database rồi dựa vào đó để generate ra entity)
-
 `migration/src/lib.rs`
 
 ```rust
@@ -816,6 +864,16 @@ Sau đó mọi người chạy lệnh `sea-orm-cli migrate fresh` và sử dụn
 ![Untitled](img/Untitled%2013.png)
 
 Vậy là ta đã tạo thành công các table trong database tiếp đến ta sẽ tạo entities từ đó.
+
+### Atomic migration (chỉ hoạt động với PostgreSQL)
+
+Khi chạy migration failed thì database sẽ được rolled back về trạng thái cũ (do migration script thực thi trong transaction)
+
+### Schema First or Entity First
+
+Có 2 cách tiếp cận khi sử dụng sea-orm là `Schema First` và `Entity First`
+
+Trong hướng dẫn này thì mình tiếp cận theo hướng `Schema First` (chạy migration để tạo ra các table trong database rồi dựa vào đó để generate ra entity)
 
 ### sea-orm-cli migrate cheatsheet
 
