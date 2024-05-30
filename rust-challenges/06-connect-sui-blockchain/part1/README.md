@@ -1,6 +1,6 @@
 # Connect Sui Blockchain with Rust
 
-Xin chào mọi người mình là SaitamaCoder đây! Dạo gần đây mình có 1 task làm về backend với đề là làm sao kết nối với Sui Blockchain. Mà cay thật là trong docs của Sui SDKs không có giới thiệu về hàm MoveCall của nó trong Rust.
+Xin chào mọi người mình là [SaitamaCoder](https://github.com/FucktheKingcode) đây! Dạo gần đây mình có 1 task làm về backend với đề là làm sao kết nối với Sui Blockchain. Mà cay thật là trong docs của Sui SDKs không có giới thiệu về hàm MoveCall của nó trong Rust.
 Thế là qua nhiều ngày nằm cay nếm mật, thẩm d... với cái lib của nó vậy nên mình mới có thể thành công được. Thôi không dài dòng triển ngay luôn nào!
 
 # Kiến thức yêu cầu
@@ -134,7 +134,7 @@ pub fn retrieve_wallet() -> Result<WalletContext, anyhow::Error> {
 
 # Bây giờ chúng ta đến bước quan trong nhất là gọi hàm trên Sui Blockchain
 
-Ông bạn Harry hiền lành của mình đã tạo một module trên Sui blokchain với cái tên đã được mã hóa dí dỏm là "hello_wolrd" và Package ID là "0x883393ee444fb828aa0e977670cf233b0078b41d144e6208719557cb3888244d". Trong module này có 2 hàm gồm một hàm "ping" không cần có tham số và một hàm là "hello_world" có 1 tham số kiểu U64.
+Ông bạn [Harry](https://github.com/hien-p) hiền lành của mình đã tạo một module trên Sui blokchain với cái tên đã được mã hóa dí dỏm là **"hello_wolrd"** và Package ID là "0x883393ee444fb828aa0e977670cf233b0078b41d144e6208719557cb3888244d". Trong module này có 2 hàm gồm một hàm "ping" không cần có tham số và một hàm là **"hello_world"** có 1 tham số kiểu U64.
 
 ## Đầu tiên chúng ta import các thư viện sau:
 
@@ -178,7 +178,7 @@ let mut ptb = ProgrammableTransactionBuilder::new();
 
 Vì trong Sui Blockchain everything là Object
 
-![Input Sui](img/connect_sui_1.jpg)
+![Hello Wolrd](img/hello_wolrd.jpg)
 
 Nên bạn muốn đưa vào một tham số để gọi hàm nào đó trong module thì cũng phải đưa nó về Object của Sui
 
@@ -250,4 +250,4 @@ println!("{:?}", transaction_response);
 Ok(())
 ```
 
-Cuối cùng cảm ơn các bạn đã xem và mình là SaitamaCoder, hy vọng gặp lại nhé!
+Cuối cùng cảm ơn các bạn đã xem và mình là [SaitamaCoder](https://github.com/FucktheKingcode), hy vọng gặp lại nhé!
