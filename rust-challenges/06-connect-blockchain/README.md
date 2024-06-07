@@ -1,4 +1,4 @@
-﻿# Interact with blockchain using Rust SDK
+# Interact with blockchain using Rust SDK
 
 Connect blockchain
 Call blockchain (Transaction and Query)
@@ -12,4 +12,3 @@ Sui
 Aptos
 Near
 Cosmos
-....
