@@ -1,4 +1,14 @@
-﻿# ConnectSuiWithRust
-- This is a sample repo showing how to interact with functionality on the Sui Blockchain using the Rust programming language
-- We will expand this repo further if we receive funding for maintenance
-- Please support this repo's solution [here](https://github.com/MystenLabs/sui/issues/17949)
+# Interact with blockchain using Rust SDK
+
+Connect blockchain
+Call blockchain (Transaction and Query)
+This is a sample folder showing how to interact with functionality on the specific Blockchain using the Rust SDK
+
+# Blockchain
+
+EVM
+Polkadot
+Sui
+Aptos
+Near
+Cosmos
