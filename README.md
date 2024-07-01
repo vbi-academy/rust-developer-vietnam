@@ -20,3 +20,9 @@ Tiếng Việt | Tiếng Anh
 
 ## Join Discord: 
 https://discord.gg/xMwmgQRJJr
+
+## Join Facebook: Rust Developer VietNam
+https://www.facebook.com/groups/rustdevelopersvietnam
+
+## Join Facebook: VBI Vietnam Dev and Tech Forum 
+https://www.facebook.com/groups/vbivietnamdevtech
