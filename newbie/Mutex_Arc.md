@@ -5,6 +5,31 @@ Bây giờ chúng ta sẽ đi tìm hiểu kiến thức cơ bản trước , đ�
 
 ## Thread và Process
 
+Để hiểu hơn `Process` và `Thread` , mình giải thích qua một ví dụ đơn giản như sau:
+
+Một công ty X hiện tại đang triển khai 1 ứng dụng bán hàng. Để có 1 sản phẩm như vậy thì quản lý công ty X sẽ giao việc cho các Leader như sau:
++ Leader A chịu trách nhiệm phần Backend
++ Leader B chịu trách nhiệm phần Frontend
++ Leader C chịu trách nhiệm phần Devops
++ Leader D chịu trách nhiệm phần UI/UX
+... 
+
+Như vậy, để có 1 sản phẩm nào đó thì cần sự kết hợp của rất nhiều người trong cùng 1 tổ chức 
+
+Vậy ở đây chúng ta sẽ map thử `Process` và `Thread` thông qua ví dụ trên như sau:
+
++ `Process` : hiểu là muốn chạy 1 ứng dụng hoàn chỉnh 
++ `Thread`: hiểu là mỗi leader sẽ chịu trách nhiệm thực thi từng chức năng sau đó tập hợp thành 1 ứng dụng 
+
+
+Hiểu tổng quát hơn : 
++ `Process` : 1 chương trình
++ `Thread` : 1 đơn vị thực thi chương trình trong process ( sử dụng sức mạnh của CPU để tính toán) 
+
+![Thread_Process](./assets/10_Thread_Process.png)
+
+Có thể thấy ví dụ trên ta thấy rất nhiều processs (chương trình) đang chạy trên máy của mình , Ví dụ process Google Chrome hiện tại đang chạy với 48 thread. Khi chúng ta start các chương trình , cơ bản sẽ start các process để chạy chương trình đó ví dụ Google Chrome, Code , Terminal , … 
+
 
 ## Mutex 
 ### Lý do có Mutex 
