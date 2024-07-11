@@ -93,14 +93,14 @@ impl fmt::Debug for Wrapper {
 }
 
 fn main() {
-    let w = Wrapper(vec!["Hello".to_string(), "world".to_string()]);
+    let w = Wrapper(vec!["One".to_string(), "Two".to_string(), "Three".to_string()]);
     println!("{:?}", w);
 }
 ```
 
 Kết quả: 
 ```
-Wrapper(["Hello"; "world"])
+Wrapper(["One"; "Two"; "Three"])
 ```
 
 ### Ví dụ thực tế 
@@ -223,7 +223,7 @@ pub fn create_user(email: &str, password: &str) -> Result<User, CreateUserError>
 }
 ```
 
-2. Giải quyết: Constraint biến đầu vaò bắt buộc là phải Wrapper Email và Wrapper Password -> `Thông tin đầu vào rõ ràng và đảm bảo an toàn dữ liệu`
+2. Giải quyết: Constraint biến đầu vaò bắt buộc là Wrapper Email và Wrapper Password -> `Thông tin đầu vào rõ ràng và đảm bảo dữ liệu an toàn`
 
 ```rust
 #[derive(Debug, Clone, PartialEq)]
@@ -243,8 +243,6 @@ pub fn create_user(email: EmailAddress, password: Password) -> Result<User, Crea
 
 ##### 2. Implemetation tuỳ chỉnh: 
 Khi tạo ra 1 new type wrapper thì việc implement trait để mở rộng chức năng của new type wrapper
-
-
 
 #### Nhược điểm 
 
